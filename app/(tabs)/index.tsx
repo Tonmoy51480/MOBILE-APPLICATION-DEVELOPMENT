@@ -72,10 +72,26 @@ export default function HomePage() {
         setSelectedStudent((prev) => (prev?.id === student.id ? null : student));
     };
 
-    // Replaced by new route
-    // if (showForm) {
-    //     return <AddStudentForm onSubmitSuccess={handleNewStudent} onClose={() => setShowForm(false)} />;
-    // }
+    const EmptyList = useCallback(() => {
+        if (query.length > 0) {
+            return (
+                <View style={styles.empty}>
+                    <Text style={styles.emptyTitle}>No results</Text>
+                    <Text style={styles.emptySub}>
+                        No students match "{debouncedQuery}"
+                    </Text>
+                </View>
+            );
+        }
+        return (
+            <View style={styles.empty}>
+                <Text style={styles.emptyTitle}>No students yet</Text>
+                <Text style={styles.emptySub}>
+                    Tap + Add to add the first student
+                </Text>
+            </View>
+        );
+    }, [query, debouncedQuery]);
 
     return (
         <SafeAreaView style={styles.screen}>
@@ -98,11 +114,7 @@ export default function HomePage() {
                 data={filtered}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <StudentItem student={item} onPress={handleSelect} isSelected={selectedStudent?.id === item.id} />}
-                ListEmptyComponent={
-                    <View style={styles.empty}>
-                        <Text style={styles.emptyText}>No students match "{query}"</Text>
-                    </View>
-                }
+                ListEmptyComponent={EmptyList}
             />
 
             {selectedStudent && <StudentDetail student={selectedStudent} onRemoved={() => setSelectedStudent(null)} />}
@@ -128,8 +140,23 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     addButtonText: { color: "#FFFFFF", fontWeight: "700", fontSize: 13 },
-    empty: { padding: 40, alignItems: "center" },
-    emptyText: { fontSize: 14, color: "#94A3B8" },
+    empty: {
+        flex: 1,
+        alignItems: "center",
+        paddingTop: 80,
+        paddingHorizontal: 32,
+    },
+    emptyTitle: {
+        fontSize: 17,
+        fontWeight: "600",
+        color: "#334155",
+        marginBottom: 6,
+    },
+    emptySub: {
+        fontSize: 13,
+        color: "#94A3B8",
+        textAlign: "center",
+    },
     center: { flex: 1, justifyContent: "center", alignItems: "center" },
     loadingHint: { marginTop: 12, color: "#64748B", fontSize: 13 },
 });
