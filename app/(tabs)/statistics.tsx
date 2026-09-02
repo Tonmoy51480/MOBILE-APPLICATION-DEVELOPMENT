@@ -2,15 +2,28 @@
 
 import React from "react";
 import { useMemo } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatBar from "../../components/stat-bar";
+import ErrorScreen from "../../components/error-screen";
 import { useStudents } from "../../context/students-context";
 
 const BAR_COLOURS = ["#0D9488", "#185FA5", "#7C3AED", "#F59E0B", "#EF4444", "#059669"];
 
 export default function Statistics() {
-    const { students } = useStudents();
+    const { students, isLoading, error } = useStudents();
+
+    if (isLoading) {
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size="large" color="#0D9488" />
+            </View>
+        );
+    }
+
+    if (error) {
+        return <ErrorScreen message={error} />;
+    }
 
     // Derived value 1: department breakdown
     // Only recomputes when students changes.
