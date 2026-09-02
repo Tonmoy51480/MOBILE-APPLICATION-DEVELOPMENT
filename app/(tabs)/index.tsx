@@ -98,7 +98,13 @@ export default function HomePage() {
             <View style={styles.titleBar}>
                 <Text style={styles.title}>Student Directory</Text>
                 {/* Navigate to the AddStudent screen — no prop passing needed */}
-                <Pressable style={styles.addButton} onPress={() => router.push("/(tabs)/add-student")}>
+                <Pressable
+                    style={styles.addButton}
+                    onPress={() => router.push("/(tabs)/add-student")}
+                    accessibilityRole="button"
+                    accessibilityLabel="Add new student"
+                    accessibilityHint="Opens the Add Student form"
+                >
                     <Text style={styles.addButtonText}>+ Add</Text>
                 </Pressable>
             </View>

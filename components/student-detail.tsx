@@ -62,8 +62,14 @@ export default function StudentDetail({ student, onRemoved }: StudentDetailProps
                 ))}
             </View>
 
-            {/* Add this at the bottom of the card */}
-            <Pressable style={styles.removeButton} onPress={handleRemove}>
+            {/* Remove button with accessibility */}
+            <Pressable
+                style={styles.removeButton}
+                onPress={handleRemove}
+                accessibilityRole="button"
+                accessibilityLabel={`Remove ${student.name} from the directory`}
+                accessibilityHint="Shows a confirmation dialog before removing"
+            >
                 <Text style={styles.removeText}>Remove from Directory</Text>
             </Pressable>
         </View>
